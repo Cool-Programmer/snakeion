@@ -1,0 +1,41 @@
+<SKELETON>
+import pygame
+pygame.init()
+gameDisplay = pygame.display.set_mode((800, 600))
+pygame.display.set_caption('Snake')
+pygame.display.update()
+pygame.quit()
+quit()
+
+----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
+
+<MAIN LOOP>
+gameExit = False  # Exit handling var
+while not gameExit:  # Main loop
+    for e in pygame.event.get():  # Events that pygame takes care, looping
+
+----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
+
+<EXITING HANDLING>
+gameExit = False  # Variable exit handling
+while not gameExit:  # Main loop
+    for e in pygame.event.get():  # Events that pygame takes care, looping
+        if e.type == pygame.QUIT:
+            gameExit = True
+
+pygame.quit()
+quit()
+
+----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
+
+<FILL BACKGROUND>
+gameDisplay.fill(red)
+
+----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
+
+<DRAW STUFF>
+pygame.draw.rect(gameDisplay, yellow, [400, 300, 10, 10])  # Drawing rectangle
+    gameDisplay.fill(yellow, rect=[200, 200, 50, 40])  # Drawing rectangle with fill
+
+----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
+
