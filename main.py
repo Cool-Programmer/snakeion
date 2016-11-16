@@ -1,5 +1,6 @@
 import pygame
 import time
+import random
 
 pygame.init()  # Initialize pygame
 
@@ -23,6 +24,10 @@ clock = pygame.time.Clock()  # clock object return
 font = pygame.font.SysFont(None, 33)  # font object
 snakeBg = pygame.image.load('images/snakebg.png')
 
+# Snake long
+def snake(blockSize, snakelist): # Adding to snake
+    for elem in snakelist:
+        pygame.draw.rect(gameDisplay, black, [elem[0], elem[1], blockSize, blockSize])  # Draw snake
 
 # Message on the screen
 def msg2scr(msg, color):
@@ -42,6 +47,10 @@ def gameLoop():
     lead_y = displayHeight / 2  # Number 1 block position Y
     lead_x_change = 0  # Initial change X
     lead_y_change = 0  # Initial change Y
+    snakeList = []
+    snakeLength = 1
+    randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0 # Apple location X (random)
+    randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0 # Apple location Y (random)
 
     while not gameExit:
         # If gameover
@@ -55,11 +64,13 @@ def gameLoop():
                     gameExit = True
                     gameOver = False
                 if event.type == pygame.KEYDOWN:  # Keypress
-                    if event.key == pygame.K_q:
-                        gameExit = True
-                    elif event.key == pygame.K_w:
+                    if event.key == pygame.K_w:
                         gameLoop()
-                    elif event.key == pygame.K_ESCAPE:
+                    elif event.key == pygame.K_ESCAPE:  # Exit via Esc
+                        gameExit = True
+                        gameOver = False
+                    elif event.key == pygame.K_q:  # Exit via Q
+                        gameOver = False
                         gameExit = True
 
 
@@ -96,10 +107,32 @@ def gameLoop():
         lead_y += lead_y_change  # Sum lead_y & lead_y_change
 
 
-        gameDisplay.fill(green)  # Set background color to green
-        pygame.draw.rect(gameDisplay, black, [lead_x, lead_y, blockSize, blockSize])  # Draw box
 
+        gameDisplay.fill(green)  # Set background color to green
+        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, blockSize, blockSize]) # Draw apple
+
+        snakeHead = []
+        snakeHead.append(lead_x)
+        snakeHead.append(lead_y)
+        snakeList.append(snakeHead)
+        # Clear list
+        if len(snakeList) > snakeLength:
+            del snakeList[0]
+
+        # Snakes touches itself :D
+        for each_part in snakeList[:-1]:
+            if each_part == snakeHead:
+                gameOver = True
+
+        # Draw snake
+        snake(blockSize, snakeList)
         pygame.display.update()
+
+        if lead_x == randAppleX and lead_y == randAppleY:  # If the snake and the apple touch each other, generate another apple
+            randAppleX = round(random.randrange(0, displayWidth - blockSize) / 10.0) * 10.0  # Apple location X (random)
+            randAppleY = round(random.randrange(0, displayHeight - blockSize) / 10.0) * 10.0  # Apple location Y (random)
+            snakeLength+=1
+
         clock.tick(FPS)  # Frames per second
 
     pygame.display.update()  # Update flip
