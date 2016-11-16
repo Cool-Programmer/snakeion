@@ -40,7 +40,7 @@ def gameLoop():
     # Game Exit | Game Over
     gameExit = False  # constant-like variable for controlling exiting
     gameOver = False  # constant-like variable for controlling ending the game
-    blockSize = 10
+    blockSize = 20 # Size of the snake
 
     # Block's position
     lead_x = displayWidth / 2  # Number 1 block position X
@@ -49,8 +49,8 @@ def gameLoop():
     lead_y_change = 0  # Initial change Y
     snakeList = []
     snakeLength = 1
-    randAppleX = round(random.randrange(0, displayWidth-blockSize)/10.0)*10.0 # Apple location X (random)
-    randAppleY = round(random.randrange(0, displayHeight-blockSize)/10.0)*10.0 # Apple location Y (random)
+    randAppleX = round(random.randrange(0, displayWidth-blockSize)) #/10.0)*10.0 # Apple location X (random)
+    randAppleY = round(random.randrange(0, displayHeight-blockSize)) #/10.0)*10.0 # Apple location Y (random)
 
     while not gameExit:
         # If gameover
@@ -109,7 +109,8 @@ def gameLoop():
 
 
         gameDisplay.fill(green)  # Set background color to green
-        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, blockSize, blockSize]) # Draw apple
+        appleSize = 30
+        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, appleSize, appleSize]) # Draw apple
 
         snakeHead = []
         snakeHead.append(lead_x)
@@ -128,10 +129,28 @@ def gameLoop():
         snake(blockSize, snakeList)
         pygame.display.update()
 
-        if lead_x == randAppleX and lead_y == randAppleY:  # If the snake and the apple touch each other, generate another apple
-            randAppleX = round(random.randrange(0, displayWidth - blockSize) / 10.0) * 10.0  # Apple location X (random)
-            randAppleY = round(random.randrange(0, displayHeight - blockSize) / 10.0) * 10.0  # Apple location Y (random)
-            snakeLength+=1
+        # THIS WILL WORK ONLY IF THE APPLE SIZE AND THE SNAKE SIZE ARE EXACTLY THE SAME
+        # if lead_x == randAppleX and lead_y == randAppleY:  # If the snake and the apple touch each other, generate another apple
+        #     randAppleX = round(random.randrange(0, displayWidth - blockSize) / 10.0) * 10.0  # Apple location X (random)
+        #     randAppleY = round(random.randrange(0, displayHeight - blockSize) / 10.0) * 10.0  # Apple location Y (random)
+        #     snakeLength+=1
+
+        # IF THE SIZE OF THE SNAKE IS 10px X 10px, AND THE APPLE SIZE IS WHATEVER
+        # if lead_x >= randAppleX and lead_x <= randAppleX+appleSize:
+        #     if lead_y >= randAppleY and lead_y <= randAppleY + appleSize:
+        #         randAppleX = round(random.randrange(0, displayWidth - blockSize))  # Apple location X (random)
+        #         randAppleY = round(random.randrange(0, displayHeight - blockSize)) # Apple location Y (random)
+        #         snakeLength+=1
+
+        # Collisions
+        if lead_x > randAppleX and lead_x < randAppleX+appleSize or lead_x+blockSize > randAppleX and lead_x+blockSize < randAppleX+appleSize:
+            if lead_y > randAppleY and lead_y < randAppleY+appleSize or lead_y+blockSize > randAppleY and lead_y+blockSize < randAppleY+appleSize:
+                randAppleX = round(random.randrange(0, displayWidth - blockSize)) # Apple location X (random)
+                randAppleY = round(random.randrange(0, displayHeight - blockSize))  # Apple location Y (random)
+                snakeLength += 1
+
+
+
 
         clock.tick(FPS)  # Frames per second
 

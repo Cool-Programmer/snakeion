@@ -9,6 +9,10 @@ quit()
 
 # gameDisplay.fill(red, rect=[200, 200, 40, 40])
 
+randAppleX = round(random.randrange(0, displayWidth - blockSize))# / 10.0) * 10.0  # Apple location X (random)
+                randAppleY = round(random.randrange(0, displayHeight - blockSize))# / 10.0) * 10.0  # Apple location Y (random)
+                snakeLength+=1
+
 ----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>----->>
 
 <MAIN LOOP>
