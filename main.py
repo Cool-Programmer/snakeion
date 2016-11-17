@@ -32,8 +32,39 @@ snakeBg = pygame.image.load('images/snakebg.png')  # Gameover screen background
 snakeHead = pygame.image.load('images/snakeHead.png')  # Snake head picture. Sorry.
 snakeBd = pygame.image.load('images/snakeBd.png')  # Snake body. Sorry.
 apple = pygame.image.load('images/apple.png')  # Apple image
-icon = pygame.image.load('images/apple.png')  #  Icon
-pygame.display.set_icon(icon)
+icon = pygame.image.load('images/apple.png')  #  Load icon
+pygame.display.set_icon(icon)  # Display icon
+
+# Pause function
+def gamePause():
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    paused = False
+                elif event.key == pygame.K_q:
+                    pygame.quit()
+                    quit()
+        gameDisplay.blit(snakeBg, (0, 0))
+        msg2scr('Paused', white, y_displace=-100, size='big')
+        msg2scr('Press C to continue or Q to quit', blue, y_displace=30, size='small')
+        pygame.display.update()
+        clock.tick()
+
+# Score function
+def score(score):
+    text = smFont.render("Score: " + str(score), True, white)
+    gameDisplay.blit(text, [0, 0])
+
+# Randomly generate apple
+def randAppleGen():
+    randAppleX = round(random.randrange(0, displayWidth - appleSize))  # Apple location X (random)
+    randAppleY = round(random.randrange(0, displayHeight - appleSize))  # Apple location Y (random)
+    return randAppleX, randAppleY
 
 # Snake long
 def snake(blockSize, snakelist): # Adding to snake
@@ -81,7 +112,7 @@ def gameIntro():
         msg2scr('Eat red apples and get bigger!', blue, y_displace=-90, size='medium')
         msg2scr('If you touch yourself or the edges ', black, y_displace=-35, size='small')
         msg2scr('you go to hell and you die!', black, y_displace=0, size='small')
-        msg2scr('Press W to start the game or Q to exit', white, y_displace=80, size='small')
+        msg2scr('Press W to play, P to pause or Q to exit', white, y_displace=80, size='small')
 
         # KEY CONTROL
         for event in pygame.event.get():
@@ -114,8 +145,7 @@ def gameLoop():
     lead_y_change = 0  # Initial change Y
     snakeList = []
     snakeLength = 1
-    randAppleX = round(random.randrange(0, displayWidth-appleSize))  # Apple location X (random)
-    randAppleY = round(random.randrange(0, displayHeight-appleSize)) # Apple location Y (random)
+    randAppleX, randAppleY = randAppleGen()
 
     while not gameExit:
         # If gameover
@@ -164,6 +194,8 @@ def gameLoop():
                     gameExit = True
                 elif event.key == pygame.K_q:  # Exit via Q
                     gameOver = True
+                elif event.key == pygame.K_p:  # Pause the game
+                    gamePause()
             # This is kinda simulation that the key hold is real event. Will make the game too easy, but:
             # if event.type == pygame.KEYUP:
             #     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -198,6 +230,10 @@ def gameLoop():
 
         # Draw snake
         snake(blockSize, snakeList)
+
+        # Score
+        score(snakeLength -1)
+
         pygame.display.update()
 
         # THIS WILL WORK ONLY IF THE APPLE SIZE AND THE SNAKE SIZE ARE EXACTLY THE SAME
@@ -216,8 +252,8 @@ def gameLoop():
         # Collisions
         if lead_x > randAppleX and lead_x < randAppleX+appleSize or lead_x+blockSize > randAppleX and lead_x+blockSize < randAppleX+appleSize:
             if lead_y > randAppleY and lead_y < randAppleY+appleSize or lead_y+blockSize > randAppleY and lead_y+blockSize < randAppleY+appleSize:
-                randAppleX = round(random.randrange(0, displayWidth - appleSize)) # Apple location X (random)
-                randAppleY = round(random.randrange(0, displayHeight - appleSize))  # Apple location Y (random)
+                print('crossover')
+                randAppleX, randAppleY = randAppleGen()
                 snakeLength += 1
 
 
