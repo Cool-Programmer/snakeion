@@ -1,5 +1,4 @@
 import pygame
-import time
 import random
 
 pygame.init()  # Initialize pygame
@@ -31,6 +30,9 @@ lgFont = pygame.font.SysFont(None, 80)  # Large font object
 snakeBg = pygame.image.load('images/snakebg.png')  # Gameover screen background
 snakeHead = pygame.image.load('images/snakeHead.png')  # Snake head picture. Sorry.
 snakeBd = pygame.image.load('images/snakeBd.png')  # Snake body. Sorry.
+# I'm really sorry about the looks of the snake
+# Now i'm actually on a linux machine, the only image editor i got is gimp and i'm not very used to it
+# So please edit it. Generally, you can do whatever you want with this script :)
 apple = pygame.image.load('images/apple.png')  # Apple image
 icon = pygame.image.load('images/apple.png')  #  Load icon
 pygame.display.set_icon(icon)  # Display icon
@@ -252,12 +254,8 @@ def gameLoop():
         # Collisions
         if lead_x > randAppleX and lead_x < randAppleX+appleSize or lead_x+blockSize > randAppleX and lead_x+blockSize < randAppleX+appleSize:
             if lead_y > randAppleY and lead_y < randAppleY+appleSize or lead_y+blockSize > randAppleY and lead_y+blockSize < randAppleY+appleSize:
-                print('crossover')
                 randAppleX, randAppleY = randAppleGen()
                 snakeLength += 1
-
-
-
 
         clock.tick(FPS)  # Frames per second
 
