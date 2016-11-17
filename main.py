@@ -40,6 +40,9 @@ pygame.display.set_icon(icon)  # Display icon
 # Pause function
 def gamePause():
     paused = True
+    msg2scr('Paused', white, y_displace=-100, size='big')
+    msg2scr('Press C to continue or Q to quit', blue, y_displace=30, size='small')
+    pygame.display.update()
     while paused:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -51,10 +54,8 @@ def gamePause():
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     quit()
-        gameDisplay.blit(snakeBg, (0, 0))
-        msg2scr('Paused', white, y_displace=-100, size='big')
-        msg2scr('Press C to continue or Q to quit', blue, y_displace=30, size='small')
-        pygame.display.update()
+        #gameDisplay.blit(snakeBg, (0, 0))
+
         clock.tick()
 
 # Score function
@@ -151,11 +152,13 @@ def gameLoop():
 
     while not gameExit:
         # If gameover
-        while gameOver == True:
-            gameDisplay.blit(snakeBg, (0, 0))
+        if gameOver == True:
             msg2scr('Game Over!', white, -128, 'big')
             msg2scr('Press W to play again or Q to quit', blue, -70, 'small')
             pygame.display.update()
+        while gameOver == True:
+            #gameDisplay.blit(snakeBg, (0, 0))
+
 
             for event in pygame.event.get():  # Gameover event handling loop
                 if event.type == pygame.QUIT:  # Game Exit
